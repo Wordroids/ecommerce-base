@@ -8,11 +8,18 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
+
+        Route::resource('products', ProductController::class);
+    });
+
+    Route::middleware(['role:customer'])->group(function () {});
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -25,7 +32,9 @@ Route::middleware('auth')->group(function () {
      * GET /products/{product}/edit (edit) – Show a form for editing a product
      * PUT /products/{product} (update) – Update a specific product
      * DELETE /products/{product} (destroy) – Delete a specific product */
-    Route::resource('products', ProductController::class);
 });
+
+
+
 
 require __DIR__ . '/auth.php';
