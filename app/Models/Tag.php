@@ -11,7 +11,7 @@ class Tag extends Model
 
     protected $fillable = ['name', 'slug'];
 
-    // Relationship to Products
+    // Many-to-many relationship between tags and products
     public function products()
     {
         return $this->belongsToMany(Product::class);
