@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create'); // Return the product creation form
+        $categories = Category::all(); // Key-value pair for select dropdown
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -29,21 +31,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
+            'sku' => 'required|string|max:255|unique:products',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:1',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
         ]);
+    
+        Product::create($validatedData);
 
-        // Create the product
-        $product = Product::create($validatedData);
-
-        return redirect()->route('products.index')->with('success', 'Product created successfully!');
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
     /**
@@ -59,7 +58,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit', compact('product')); // Show edit form
+        $categories = Category::all(); 
+    return view('products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -67,21 +67,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        // Validate the request
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|integer',
+            'sku' => 'required|string|max:255|unique:products,sku,' . $product->id,
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:1',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
         ]);
-
-        // Update the product
+    
         $product->update($validatedData);
-
-        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+    
+        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 
     /**
