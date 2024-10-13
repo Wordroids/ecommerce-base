@@ -54,7 +54,7 @@
                                     </td>
                                     <th scope="row" class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         @if(isset($product->assets[0]))
-                                            <img src="{{ Storage::url($product->assets[0]->file_path) }}" alt="{{ $product->name }} Image" class="w-auto h-8 mr-3 rounded">
+                                            <img src="{{ Storage::url($product->assets[0]->file_path) }}" alt="{{ $product->name }} Image" class="object-cover rounded-full h-8 w-8 mr-3">
                                         @else
                                             <img src="{{ asset('path/to/default/image.jpg') }}" alt="{{ $product->name }} Image" class="w-auto h-8 mr-3 rounded">
                                         @endif
