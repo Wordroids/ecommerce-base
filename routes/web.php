@@ -10,9 +10,10 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::middleware(['role:admin'])->group(function () {
+    Route::group(['middleware' => 'role:admin', 'prefix' => 'admin'], function () {
+        
         Route::get('/dashboard', function () {
-            return view('dashboard');
+            return view('pages.admin.dashboard');
         })->name('dashboard');
 
         Route::resource('products', ProductController::class);
