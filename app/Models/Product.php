@@ -61,4 +61,23 @@ class Product extends Model
         return $this->morphOne(Assets::class, 'assetable')->where('is_featured', true);
     }
 
+     // Relationship to Make
+     public function make()
+     {
+         return $this->belongsTo(Make::class, 'make_id');
+     }
+ 
+     // Relationship to Model
+     public function model()
+     {
+         return $this->belongsTo(Models::class, 'model_id');
+     }
+ 
+     // Relationship to Variant
+     public function variant()
+     {
+         return $this->belongsTo(Variant::class, 'variant_id');
+     }
+
+
 }

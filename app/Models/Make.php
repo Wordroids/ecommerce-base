@@ -12,6 +12,6 @@ class Make extends Model
 
     public function models()
     {
-        return $this->hasMany(Model::class);
+        return $this->hasMany(Models::class);
     }
 }

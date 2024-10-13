@@ -105,7 +105,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('products.show', compact('product')); // Show product details
+        $product = Product::with(['featuredImage', 'make', 'model', 'variant'])->find($product->id); // Find the product with its featured image and make relationship
+        // dd($product);
+        return view('pages.admin.products.show', compact('product')); // Show product details
     }
 
     /**
