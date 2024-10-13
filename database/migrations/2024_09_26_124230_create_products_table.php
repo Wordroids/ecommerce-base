@@ -34,6 +34,12 @@ return new class extends Migration
             $table->decimal('discounted_price', 10, 2)->default(0);
             $table->integer('available_quantity')->default(0);
 
+            // Year, make, model, and variant
+            $table->integer('year');
+            $table->foreignId('make_id')->constrained()->onDelete('cascade');
+            $table->foreignId('model_id')->constrained()->onDelete('cascade');
+            $table->foreignId('variant_id')->constrained()->onDelete('cascade');
+
             // Soft deletes and timestamps
             $table->softDeletes();
             $table->timestamps();

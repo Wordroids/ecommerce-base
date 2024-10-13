@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Varient extends Model
+class Variant extends Model
 {
-    protected $fillable = ['name', 'model_id'];
+   
     use HasFactory;
+    protected $fillable = ['name', 'model_id'];
     public function model()
     {
-        return $this->belongsTo(Model::class);
+        return $this->belongsTo(Models::class);
     }
 }

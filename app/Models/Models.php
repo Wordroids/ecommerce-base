@@ -17,6 +17,6 @@ class Models extends Model
 
     public function variants()
     {
-        return $this->hasMany(Varient::class);
+        return $this->hasMany(Variant::class);
     }
 }

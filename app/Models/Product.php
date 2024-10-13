@@ -25,6 +25,9 @@ class Product extends Model
         'created_by',
         'updated_by',
         'year',
+        'make_id',
+        'model_id',
+        'variant_id',
 
     ];
 

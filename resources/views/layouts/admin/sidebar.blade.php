@@ -84,9 +84,18 @@
                         <a href="{{ route('categories.index') }}"
                             class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Categories</a>
                     </li>
+                   
                     <li>
-                        <a href="{{ route('attributes.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Attributes</a>
+                        <a href="{{ route('makes.index') }}"
+                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Makes</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('models.index') }}"
+                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Models</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('variants.index') }}"
+                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Variants</a>
                     </li>
                 </ul>
             </li>

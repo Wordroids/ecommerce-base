@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Assets;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Make;
+use App\Models\Models;
 use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +20,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all(); // Get all products
-        return view('pages.admin.products.index', compact('products'));
+        return view('pages.admin.products.index', compact('products')); // Show all products
     }
 
     /**
@@ -27,9 +30,10 @@ class ProductController extends Controller
     {
         // Fetch all categories and brands from the database
         $categories = Category::all();
+        $makes = Make::all();
 
         // Pass categories and brands to the view
-        return view('pages.admin.products.create', compact('categories'));
+        return view('pages.admin.products.create', compact('categories', 'makes'));
     }
 
     /**
@@ -37,6 +41,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        //  dd($request->all());
         // Validation
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
@@ -51,6 +56,10 @@ class ProductController extends Controller
             'discounted_price' => 'nullable|numeric|min:0',
             'available_quantity' => 'required|integer|min:0',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+            'make_id' => 'required|exists:makes,id',
+            'model_id' => 'required|exists:models,id',
+            'variant_id' => 'required|exists:variants,id',
+            'year' => 'required|integer|min:1900|max:2024',
         ]);
 
         // Store the product
@@ -66,6 +75,10 @@ class ProductController extends Controller
             'price' => $validatedData['price'],
             'discounted_price' => $validatedData['discounted_price'],
             'available_quantity' => $validatedData['available_quantity'],
+            'make_id' => $validatedData['make_id'],
+            'model_id' => $validatedData['model_id'],
+            'variant_id' => $validatedData['variant_id'],
+            'year' => $validatedData['year'],
             'created_by' => auth()->id(),
             'updated_by' => auth()->id(),
         ]);
@@ -131,5 +144,17 @@ class ProductController extends Controller
         $product->delete(); // Delete the product
 
         return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+    }
+
+    public function getModels($makeId)
+    {
+        $models = Models::where('make_id', $makeId)->pluck('name', 'id');
+        return response()->json($models);
+    }
+
+    public function getVariants($modelId)
+    {
+        $variants = Variant::where('model_id', $modelId)->pluck('name', 'id');
+        return response()->json($variants);
     }
 }

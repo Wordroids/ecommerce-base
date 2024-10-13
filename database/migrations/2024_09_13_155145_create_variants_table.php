@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('varients', function (Blueprint $table) {
+        Schema::create('variants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->foreignId('model_id')->constrained('models')->onDelete('cascade'); // Foreign key to models table
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('varients');
+        Schema::dropIfExists('variants');
     }
 };

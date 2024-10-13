@@ -3,7 +3,10 @@
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController; // Add CategoryController for Category CRUD
+use App\Http\Controllers\MakeController;
+use App\Http\Controllers\ModelsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VariantController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,7 +17,7 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes (role: admin)
     Route::group(['middleware' => 'role:admin', 'prefix' => 'admin'], function () {
-        
+
         // Admin Dashboard
         Route::get('/dashboard', function () {
             return view('pages.admin.dashboard');
@@ -37,11 +40,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-   
-        // Attributs CRUD Routes
-        Route::resource('attributes', AttributeController::class);
 
-   
+        //Makes , Models , Variant CRUD Resources
+        Route::resource('makes', MakeController::class);
+        Route::resource('models', ModelsController::class);
+        Route::resource('variants', VariantController::class);
+
+        
+        
     });
 
     // Customer routes (role: customer)
@@ -54,7 +60,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
+Route::get('/get-models/{make_id}', [ProductController::class, 'getModels']);
+        Route::get('/get-variants/{model_id}', [ProductController::class, 'getVariants']);
 /** 
  * Notes for Product Resource Routes:
  * 

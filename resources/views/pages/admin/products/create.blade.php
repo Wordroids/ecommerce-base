@@ -45,6 +45,39 @@
                                 <x-input-error :messages="$errors->get('sku')" class="mt-2" />
                             </div>
 
+                            <!-- Make -->
+                            <div class="mb-4">
+                                <x-input-label for="make_id" :value="__('Make')" />
+                                <select name="make_id" id="make_id" class="block mt-1 w-full border-gray-300 rounded-lg">
+                                    <option value="">{{ __('Select Make') }}</option>
+                                    @foreach($makes as $make)
+                                    <option value="{{ $make->id }}" {{ old('make_id') == $make->id ? 'selected' : '' }}>
+                                        {{ $make->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <x-input-error :messages="$errors->get('make_id')" class="mt-2" />
+                            </div>
+
+                            <!-- Model -->
+                            <div class="mb-4">
+                                <x-input-label for="model_id" :value="__('Model')" />
+                                <select name="model_id" id="model_id" class="block mt-1 w-full border-gray-300 rounded-lg">
+                                    <option value="">{{ __('Select Model') }}</option>
+                                    <!-- Models will be populated dynamically based on Make -->
+                                </select>
+                                <x-input-error :messages="$errors->get('model_id')" class="mt-2" />
+                            </div>
+
+                            <!-- Variant -->
+                            <div class="mb-4">
+                                <x-input-label for="variant_id" :value="__('Variant')" />
+                                <select name="variant_id" id="variant_id" class="block mt-1 w-full border-gray-300 rounded-lg">
+                                    <option value="">{{ __('Select Variant') }}</option>
+                                    <!-- Variants will be populated dynamically based on Model -->
+                                </select>
+                                <x-input-error :messages="$errors->get('variant_id')" class="mt-2" />
+                            </div>
                             <!-- Description -->
                             <div class="mb-4">
                                 <x-input-label for="description" :value="__('Description')" />
@@ -102,6 +135,13 @@
                                 <x-input-error :messages="$errors->get('price')" class="mt-2" />
                             </div>
 
+                              <!-- Price -->
+                              <div class="mb-4">
+                                <x-input-label for="year" :value="__('Year')" />
+                                <x-text-input id="year" class="block mt-1 w-full" type="number" step="0.01" name="year" :value="old('year')" required />
+                                <x-input-error :messages="$errors->get('year')" class="mt-2" />
+                            </div>
+
                             <!-- Discounted Price -->
                             <div class="mb-4">
                                 <x-input-label for="discounted_price" :value="__('Discounted Price')" />
@@ -138,4 +178,53 @@
 
         </main>
     </div>
+    
+    <!-- jQuery for AJAX -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Fetch models when make is selected
+            $('#make_id').on('change', function() {
+                var makeId = $(this).val();
+                if (makeId) {
+                    $.ajax({
+                        url: '/get-models/' + makeId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('#model_id').empty().append('<option value="">{{ __("Select Model") }}</option>');
+                            $.each(data, function(key, value) {
+                                $('#model_id').append('<option value="' + key + '">' + value + '</option>');
+                            });
+                            $('#variant_id').empty().append('<option value="">{{ __("Select Variant") }}</option>'); // Clear variants
+                        }
+                    });
+                } else {
+                    $('#model_id').empty();
+                    $('#variant_id').empty();
+                }
+            });
+
+            // Fetch variants when model is selected
+            $('#model_id').on('change', function() {
+                var modelId = $(this).val();
+                if (modelId) {
+                    $.ajax({
+                        url: '/get-variants/' + modelId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('#variant_id').empty().append('<option value="">{{ __("Select Variant") }}</option>');
+                            $.each(data, function(key, value) {
+                                $('#variant_id').append('<option value="' + key + '">' + value + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#variant_id').empty();
+                }
+            });
+        });
+    </script>
 </x-app-layout>
