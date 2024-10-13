@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('cost_price', 8, 2)->nullable();
             $table->string('currency', 3)->default('AUD');
             $table->timestamp('discount_start')->nullable();
-$table->timestamp('discount_end')->nullable();
+            $table->timestamp('discount_end')->nullable();
             $table->timestamps();
         });
     }
