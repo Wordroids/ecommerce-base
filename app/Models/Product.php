@@ -13,38 +13,14 @@ class Product extends Model
     protected $fillable = [
         'name',
         'slug',
+        'product_number',
+        'sku',
         'description',
         'short_description',
-        'sku',
-        'barcode',
-        'price',
-        'discount_price',
-        'cost_price',
-        'currency',
-        'quantity',
-        'is_active',
-        'status',
-        'weight',
-        'dimensions',
         'category_id',
         'brand_id',
-        'image_url',
-        'gallery',
-        'video_url',
-        'has_variants',
-        'meta_title',
-        'meta_description',
-        'meta_keywords',
-        'tags',
-        'stock_status',
-        'min_purchase_quantity',
-        'max_purchase_quantity',
-        'shipping_weight',
-        'warehouse_location',
-        'backorder_allowed',
-        'related_products',
-        'created_by',
-        'updated_by',
+        'condition',
+        'status',
     ];
 
     // A product belongs to a category
@@ -53,6 +29,22 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    // Product has one Price
+    public function price()
+    {
+        return $this->hasOne(ProductPrices::class);
+    }
+
+     // Product has one Inventory
+     public function inventory()
+     {
+         return $this->hasOne(ProductInventory::class);
+     }
+    // Product has many Media (e.g., images and videos)
+    public function media()
+    {
+        return $this->hasMany(ProductMedia::class);
+    }
     // A product belongs to a brand
     public function brand()
     {

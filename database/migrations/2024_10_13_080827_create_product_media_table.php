@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_tag', function (Blueprint $table) {
+        Schema::create('product_media', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->string('image_url')->nullable(); // Featured Image
+            $table->json('gallery')->nullable(); // Additional images in JSON
+            $table->string('video_url')->nullable(); // Optional video URL
+            $table->boolean('is_featured')->default(false);
             $table->timestamps();
         });
-        
-        
     }
 
     /**
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_tag');
+        Schema::dropIfExists('product_media');
     }
 };

@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_tag', function (Blueprint $table) {
+        Schema::create('product_prices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->decimal('price', 8, 2);
+            $table->decimal('discount_price', 8, 2)->nullable();
+            $table->decimal('cost_price', 8, 2)->nullable();
+            $table->string('currency', 3)->default('AUD');
+            $table->timestamp('discount_start')->nullable();
+$table->timestamp('discount_end')->nullable();
             $table->timestamps();
         });
-        
-        
     }
 
     /**
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_tag');
+        Schema::dropIfExists('product_prices');
     }
 };

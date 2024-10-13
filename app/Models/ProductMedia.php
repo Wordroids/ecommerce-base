@@ -5,26 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class ProductMedia extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'product_id',
-        'user_id',
-        'review',
-        'rating',
+        'image_url',
+        'gallery',
+        'video_url',
+        'is_featured',
     ];
 
-    // Review belongs to a Product
+    // ProductMedia belongs to a Product
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    // Review belongs to a User
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }
