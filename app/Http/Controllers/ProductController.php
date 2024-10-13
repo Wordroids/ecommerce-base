@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all(); // Get all products
-        return view('products.index', compact('products'));
+        return view('pages.admin.products.index', compact('products'));
     }
 
     /**
@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all(); // Key-value pair for select dropdown
-        return view('products.create', compact('categories'));
+        return view('pages.admin.products.create', compact('categories'));
     }
 
     /**
