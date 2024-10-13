@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Variant;
-use App\Http\Requests\StoreVariantRequest;
-use App\Http\Requests\UpdateVariantRequest;
+use App\Models\Assets;
+use App\Http\Requests\StoreAssetsRequest;
+use App\Http\Requests\UpdateAssetsRequest;
 
-class VariantController extends Controller
+class AssetsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class VariantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVariantRequest $request)
+    public function store(StoreAssetsRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class VariantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Variant $variant)
+    public function show(Assets $assets)
     {
         //
     }
@@ -43,7 +43,7 @@ class VariantController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Variant $variant)
+    public function edit(Assets $assets)
     {
         //
     }
@@ -51,7 +51,7 @@ class VariantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVariantRequest $request, Variant $variant)
+    public function update(UpdateAssetsRequest $request, Assets $assets)
     {
         //
     }
@@ -59,7 +59,7 @@ class VariantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Variant $variant)
+    public function destroy(Assets $assets)
     {
         //
     }

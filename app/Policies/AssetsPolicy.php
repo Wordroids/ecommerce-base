@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\ProductPrices;
+use App\Models\Assets;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ProductPricesPolicy
+class AssetsPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class ProductPricesPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ProductPrices $productPrices): bool
+    public function view(User $user, Assets $assets): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class ProductPricesPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, ProductPrices $productPrices): bool
+    public function update(User $user, Assets $assets): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class ProductPricesPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ProductPrices $productPrices): bool
+    public function delete(User $user, Assets $assets): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class ProductPricesPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ProductPrices $productPrices): bool
+    public function restore(User $user, Assets $assets): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class ProductPricesPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ProductPrices $productPrices): bool
+    public function forceDelete(User $user, Assets $assets): bool
     {
         //
     }

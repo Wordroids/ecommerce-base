@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assets;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -22,7 +25,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all(); // Key-value pair for select dropdown
+        // Fetch all categories and brands from the database
+        $categories = Category::all();
+
+        // Pass categories and brands to the view
         return view('pages.admin.products.create', compact('categories'));
     }
 
@@ -31,17 +37,53 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // Validation
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products',
-            'sku' => 'required|string|max:255|unique:products',
-            'price' => 'required|numeric|min:0',
-            'quantity' => 'required|integer|min:1',
+            'product_number' => 'required|string|max:255|unique:products,product_number',
+            'sku' => 'required|string|max:255|unique:products,sku',
+            'description' => 'nullable|string',
+            'short_description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'condition' => 'required|in:new,used,refurbished',
+            'status' => 'required|in:available,out_of_stock,discontinued',
+            'price' => 'required|numeric|min:0',
+            'discounted_price' => 'nullable|numeric|min:0',
+            'available_quantity' => 'required|integer|min:0',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
         ]);
-    
-        Product::create($validatedData);
 
+        // Store the product
+        $product = Product::create([
+            'name' => $validatedData['name'],
+            'product_number' => $validatedData['product_number'],
+            'sku' => $validatedData['sku'],
+            'description' => $validatedData['description'],
+            'short_description' => $validatedData['short_description'],
+            'category_id' => $validatedData['category_id'],
+            'condition' => $validatedData['condition'],
+            'status' => $validatedData['status'],
+            'price' => $validatedData['price'],
+            'discounted_price' => $validatedData['discounted_price'],
+            'available_quantity' => $validatedData['available_quantity'],
+            'created_by' => auth()->id(),
+            'updated_by' => auth()->id(),
+        ]);
+
+        // Handle the featured image upload
+        if ($request->hasFile('featured_image')) {
+            $filePath = $request->file('featured_image')->store('products/images', 'public');
+
+            // Store the featured image in the assets table
+            Assets::create([
+                'file_path' => $filePath,
+                'file_type' => 'image',
+                'is_featured' => true,
+                'assetable_id' => $product->id,
+                'assetable_type' => Product::class,
+            ]);
+        }
+        // Redirect back with a success message
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
@@ -58,8 +100,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = Category::all(); 
-    return view('products.edit', compact('product', 'categories'));
+        $categories = Category::all();
+        return view('products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -75,9 +117,9 @@ class ProductController extends Controller
             'quantity' => 'required|integer|min:1',
             'category_id' => 'required|exists:categories,id',
         ]);
-    
+
         $product->update($validatedData);
-    
+
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 

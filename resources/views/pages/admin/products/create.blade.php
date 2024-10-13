@@ -3,8 +3,8 @@
 
         <main class="p-4 md:ml-64 h-auto pt-20">
 
-            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600  mb-4">
-               
+            <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 mb-4">
+
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
 
@@ -20,7 +20,8 @@
                         @endif
 
                         <!-- Product Form -->
-                        <form action="{{ route('products.store') }}" method="POST">
+                        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+
                             @csrf
 
                             <!-- Product Name -->
@@ -30,11 +31,11 @@
                                 <x-input-error :messages="$errors->get('name')" class="mt-2" />
                             </div>
 
-                            <!-- Slug -->
+                            <!-- Product Number -->
                             <div class="mb-4">
-                                <x-input-label for="slug" :value="__('Slug')" />
-                                <x-text-input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug')" required />
-                                <x-input-error :messages="$errors->get('slug')" class="mt-2" />
+                                <x-input-label for="product_number" :value="__('Product Number')" />
+                                <x-text-input id="product_number" class="block mt-1 w-full" type="text" name="product_number" :value="old('product_number')" required />
+                                <x-input-error :messages="$errors->get('product_number')" class="mt-2" />
                             </div>
 
                             <!-- SKU -->
@@ -44,18 +45,18 @@
                                 <x-input-error :messages="$errors->get('sku')" class="mt-2" />
                             </div>
 
-                            <!-- Price -->
+                            <!-- Description -->
                             <div class="mb-4">
-                                <x-input-label for="price" :value="__('Price')" />
-                                <x-text-input id="price" class="block mt-1 w-full" type="number" step="0.01" name="price" :value="old('price')" required />
-                                <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                                <x-input-label for="description" :value="__('Description')" />
+                                <textarea id="description" name="description" class="block mt-1 w-full" required>{{ old('description') }}</textarea>
+                                <x-input-error :messages="$errors->get('description')" class="mt-2" />
                             </div>
 
-                            <!-- Quantity -->
+                            <!-- Short Description -->
                             <div class="mb-4">
-                                <x-input-label for="quantity" :value="__('Quantity')" />
-                                <x-text-input id="quantity" class="block mt-1 w-full" type="number" name="quantity" :value="old('quantity')" required />
-                                <x-input-error :messages="$errors->get('quantity')" class="mt-2" />
+                                <x-input-label for="short_description" :value="__('Short Description')" />
+                                <textarea id="short_description" name="short_description" class="block mt-1 w-full">{{ old('short_description') }}</textarea>
+                                <x-input-error :messages="$errors->get('short_description')" class="mt-2" />
                             </div>
 
                             <!-- Category ID -->
@@ -72,12 +73,63 @@
                                 <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
                             </div>
 
+                            <!-- Condition -->
+                            <div class="mb-4">
+                                <x-input-label for="condition" :value="__('Condition')" />
+                                <select name="condition" id="condition" class="block mt-1 w-full border-gray-300 rounded-lg">
+                                    <option value="new" {{ old('condition') == 'new' ? 'selected' : '' }}>{{ __('New') }}</option>
+                                    <option value="used" {{ old('condition') == 'used' ? 'selected' : '' }}>{{ __('Used') }}</option>
+                                    <option value="refurbished" {{ old('condition') == 'refurbished' ? 'selected' : '' }}>{{ __('Refurbished') }}</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('condition')" class="mt-2" />
+                            </div>
+
+                            <!-- Status -->
+                            <div class="mb-4">
+                                <x-input-label for="status" :value="__('Status')" />
+                                <select name="status" id="status" class="block mt-1 w-full border-gray-300 rounded-lg">
+                                    <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>{{ __('Available') }}</option>
+                                    <option value="out_of_stock" {{ old('status') == 'out_of_stock' ? 'selected' : '' }}>{{ __('Out of Stock') }}</option>
+                                    <option value="discontinued" {{ old('status') == 'discontinued' ? 'selected' : '' }}>{{ __('Discontinued') }}</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('status')" class="mt-2" />
+                            </div>
+
+                            <!-- Price -->
+                            <div class="mb-4">
+                                <x-input-label for="price" :value="__('Price')" />
+                                <x-text-input id="price" class="block mt-1 w-full" type="number" step="0.01" name="price" :value="old('price')" required />
+                                <x-input-error :messages="$errors->get('price')" class="mt-2" />
+                            </div>
+
+                            <!-- Discounted Price -->
+                            <div class="mb-4">
+                                <x-input-label for="discounted_price" :value="__('Discounted Price')" />
+                                <x-text-input id="discounted_price" class="block mt-1 w-full" type="number" step="0.01" name="discounted_price" :value="old('discounted_price')" />
+                                <x-input-error :messages="$errors->get('discounted_price')" class="mt-2" />
+                            </div>
+
+                            <!-- Available Quantity -->
+                            <div class="mb-4">
+                                <x-input-label for="available_quantity" :value="__('Available Quantity')" />
+                                <x-text-input id="available_quantity" class="block mt-1 w-full" type="number" name="available_quantity" :value="old('available_quantity')" required />
+                                <x-input-error :messages="$errors->get('available_quantity')" class="mt-2" />
+                            </div>
+                            <!-- Featured Image -->
+                            <div class="mb-4">
+                                <x-input-label for="featured_image" :value="__('Featured Image')" />
+                                <input type="file" name="featured_image" id="featured_image" class="block mt-1 w-full">
+                                <x-input-error :messages="$errors->get('featured_image')" class="mt-2" />
+                            </div>
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
                                 <x-primary-button>
                                     {{ __('Create') }}
                                 </x-primary-button>
                             </div>
+
+
+
                         </form>
 
                     </div>

@@ -12,61 +12,25 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'slug',
         'product_number',
         'sku',
         'description',
         'short_description',
         'category_id',
-        'brand_id',
         'condition',
         'status',
+        'price',
+        'discounted_price',
+        'available_quantity',
+        'created_by',
+        'updated_by',
+
     ];
 
     // A product belongs to a category
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
-
-    // Product has one Price
-    public function price()
-    {
-        return $this->hasOne(ProductPrices::class);
-    }
-
-     // Product has one Inventory
-     public function inventory()
-     {
-         return $this->hasOne(ProductInventory::class);
-     }
-    // Product has many Media (e.g., images and videos)
-    public function media()
-    {
-        return $this->hasMany(ProductMedia::class);
-    }
-    // A product belongs to a brand
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
-
-    // A product can have many variants
-    public function variants()
-    {
-        return $this->hasMany(Variant::class);
-    }
-
-    // A product can have many reviews
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    // Many-to-many relationship between products and tags
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
     }
 
     // A product is created by a user
@@ -79,5 +43,17 @@ class Product extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    // Polymorphic relationship to assets
+    public function assets()
+    {
+        return $this->morphMany(Assets::class, 'assetable');
+    }
+
+    // To retrieve the featured asset (image)
+    public function featuredImage()
+    {
+        return $this->morphOne(Assets::class, 'assetable')->where('is_featured', true);
     }
 }

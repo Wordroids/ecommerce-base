@@ -45,12 +45,6 @@ class User extends Authenticatable
         ];
     }
 
-    // User's reviews
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
-
     // User's created products
     public function createdProducts()
     {

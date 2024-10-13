@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
             $table->string('product_number')->unique();
             $table->string('sku')->unique();
             $table->text('description')->nullable();
@@ -22,7 +21,6 @@ return new class extends Migration
 
             // Foreign key relationships
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->foreignId('brand_id')->nullable()->constrained()->onDelete('set null');
 
             // Status and condition
             $table->enum('condition', ['new', 'used', 'refurbished'])->default('new');
@@ -30,6 +28,11 @@ return new class extends Migration
 
             $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
+
+            //add - Price ,Discouted Price , Available Quantity .
+            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('discounted_price', 10, 2)->default(0);
+            $table->integer('available_quantity')->default(0);
 
             // Soft deletes and timestamps
             $table->softDeletes();
