@@ -6,6 +6,12 @@
             <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 mb-4 ">
 
                 <div class="relative overflow-visible bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+                    <!-- Session success message -->
+                    @if(session('success'))
+                        <div class="bg-green-500 text-white p-4 my-4 rounded-lg">
+                            {{ session('success') }}
+                        </div>
+                        @endif
                     <div class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
                         <div class="flex items-center flex-1 space-x-4">
                             <h5>
@@ -25,6 +31,7 @@
                                 Add new product
                             </a>
                         </div>
+                         
                     </div>
 
                     <div class="overflow-x-auto overflow-y-visible h-screen">
@@ -100,15 +107,15 @@
                                     <td class="px-4 py-2">{{ $product->updated_at->diffForHumans() }}</td>
                                     <td class="px-4 py-2">
                                         <!-- Flowbite-powered Dropdown -->
-                                        <div class="relative z-10">
-                                            <button id="dropdownButton-{{ $product->id }}" data-dropdown-toggle="dropdown-{{ $product->id }}" class="inline-flex justify-center w-full rounded-md px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                                        <div class="relative ">
+                                            <button id="dropdownDefaultButton-{{$product->id}}" data-dropdown-toggle="dropdown-{{$product->id}}" class="inline-flex justify-center w-full rounded-md px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
                                                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M10 3a1 1 0 110 2 1 1 0 010-2zM10 9a1 1 0 110 2 1 1 0 010-2zM10 15a1 1 0 110 2 1 1 0 010-2z" />
                                                 </svg>
                                             </button>
                                             <!-- Dropdown Menu -->
-                                            <div id="dropdown-{{ $product->id }}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-28 dark:bg-gray-700" data-popper-placement="bottom">
-                                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownButton-{{ $product->id }}">
+                                            <div id="dropdown-{{$product->id}}" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700" >
+                                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton-{{$product->id}}">
                                                     <li>
                                                         <a href="{{ route('products.show', $product->id) }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">View</a>
                                                     </li>
