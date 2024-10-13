@@ -13,21 +13,16 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = [
-            ['name' => 'Electronics', 'description' => 'Devices, gadgets, and accessories.'],
-            ['name' => 'Clothing', 'description' => 'Fashion and clothing items.'],
-            ['name' => 'Books', 'description' => 'Various books and reading materials.'],
-            ['name' => 'Home & Kitchen', 'description' => 'Home and kitchen appliances.'],
-            ['name' => 'Sports', 'description' => 'Sporting goods and equipment.'],
-            ['name' => 'Beauty & Health', 'description' => 'Beauty and health products.'],
-        ];
-
-        foreach ($categories as $category) {
-            Category::create([
-                'name' => $category['name'],
-                'slug' => Str::slug($category['name']), // Generate slug from the name
-                'description' => $category['description'] ?? null, // Optional description
-            ]);
-        }
+         // Creating root categories
+         $electronics = Category::create(['name' => 'Electronics']);
+         $fashion = Category::create(['name' => 'Fashion']);
+ 
+         // Creating sub-categories under Electronics
+         Category::create(['name' => 'Mobile Phones', 'parent_id' => $electronics->id]);
+         Category::create(['name' => 'Laptops', 'parent_id' => $electronics->id]);
+ 
+         // Creating sub-categories under Fashion
+         Category::create(['name' => 'Men Clothing', 'parent_id' => $fashion->id]);
+         Category::create(['name' => 'Women Clothing', 'parent_id' => $fashion->id]);
     }
 }

@@ -8,24 +8,44 @@
 
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-6">
                             Create Category
                         </h2>
 
-                        <form action="{{ route('categories.store') }}" method="POST">
+                        <form action="{{ route('categories.store') }}" method="POST" class="space-y-6">
                             @csrf
-                            <div class="mt-4">
-                                <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
-                                <input type="text" name="name" id="name" class="form-input rounded-md shadow-sm mt-1 block w-full" required>
+
+                            <!-- Name Input -->
+                            <div>
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category Name</label>
+                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" required>
                             </div>
 
-                            <div class="mt-4">
-                                <label for="slug" class="block font-medium text-sm text-gray-700">Slug</label>
-                                <input type="text" name="slug" id="slug" class="form-input rounded-md shadow-sm mt-1 block w-full">
+                            <!-- description Input -->
+                            <div>
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                <input type="text" name="description" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             </div>
 
-                            <div class="mt-4">
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            <!-- Parent Category Dropdown -->
+                            <div>
+                                <label for="parent_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Parent Category (Optional)</label>
+                                <select name="parent_id" id="parent_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                                    <option value="">None</option>
+                                    @foreach ($categories as $parent)
+                                        <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                        @if ($parent->children)
+                                            @foreach ($parent->children as $child)
+                                                <option value="{{ $child->id }}">-- {{ $child->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div>
+                                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none">
                                     Save
                                 </button>
                             </div>

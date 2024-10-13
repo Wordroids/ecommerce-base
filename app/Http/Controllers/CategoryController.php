@@ -12,7 +12,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        // Retrieve all categories with their parent categories for listing
+        $categories = Category::with('parent')->get();
         return view('pages.admin.categories.index', compact('categories'));
     }
 
@@ -21,7 +22,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.categories.create');
+        // Retrieve categories that can act as parents (only root categories)
+        $categories = Category::whereNull('parent_id')->get();
+        return view('pages.admin.categories.create', compact('categories'));
     }
 
     /**
@@ -29,9 +32,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request including optional parent category
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
+            'parent_id' => 'nullable|exists:categories,id', // parent_id is optional
         ]);
 
         Category::create($validated);
@@ -52,7 +57,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', compact('category'));
+        // Retrieve categories for the parent selection in the edit form
+        $categories = Category::whereNull('parent_id')->where('id', '!=', $category->id)->get();
+        return view('pages.admin.categories.edit', compact('category', 'categories'));
     }
 
     /**
@@ -60,11 +67,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        // Validate the request including optional parent category
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
             'description' => 'nullable|string',
+            'parent_id' => 'nullable|exists:categories,id', // parent_id is optional
         ]);
 
+        // Update the category with validated data
         $category->update($validated);
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
@@ -75,6 +85,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        // Check if the category has sub-categories before deleting
+        if ($category->children()->count() > 0) {
+            return redirect()->route('categories.index')->with('error', 'Category has sub-categories and cannot be deleted.');
+        }
+
         $category->delete();
 
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
