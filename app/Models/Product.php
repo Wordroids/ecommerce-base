@@ -56,4 +56,9 @@ class Product extends Model
     {
         return $this->morphOne(Assets::class, 'assetable')->where('is_featured', true);
     }
+
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class, 'attribute_product');
+    }
 }

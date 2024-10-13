@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController; // Add CategoryController for Category CRUD
 use App\Http\Controllers\ProfileController;
@@ -36,6 +37,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+   
+        // Attributs CRUD Routes
+        Route::resource('attributes', AttributeController::class);
+
+   
     });
 
     // Customer routes (role: customer)
