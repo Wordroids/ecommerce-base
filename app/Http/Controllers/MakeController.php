@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AttributeProduct;
-use App\Http\Requests\StoreAttributeProductRequest;
-use App\Http\Requests\UpdateAttributeProductRequest;
+use App\Models\Make;
+use App\Http\Requests\StoreMakeRequest;
+use App\Http\Requests\UpdateMakeRequest;
 
-class AttributeProductController extends Controller
+class MakeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class AttributeProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAttributeProductRequest $request)
+    public function store(StoreMakeRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class AttributeProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AttributeProduct $attributeProduct)
+    public function show(Make $make)
     {
         //
     }
@@ -43,7 +43,7 @@ class AttributeProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AttributeProduct $attributeProduct)
+    public function edit(Make $make)
     {
         //
     }
@@ -51,7 +51,7 @@ class AttributeProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAttributeProductRequest $request, AttributeProduct $attributeProduct)
+    public function update(UpdateMakeRequest $request, Make $make)
     {
         //
     }
@@ -59,7 +59,7 @@ class AttributeProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AttributeProduct $attributeProduct)
+    public function destroy(Make $make)
     {
         //
     }

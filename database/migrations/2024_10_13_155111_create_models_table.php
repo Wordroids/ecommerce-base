@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('models', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // e.g., Make, Model, Year, Variant
-            $table->unsignedBigInteger('parent_id')->nullable(); // For hierarchical structure
-            $table->foreign('parent_id')->references('id')->on('attributes')->onDelete('cascade');
+            $table->string('name');
+            $table->foreignId('make_id')->constrained('makes')->onDelete('cascade'); // Foreign key to makes table
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('models');
     }
 };
