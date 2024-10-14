@@ -9,6 +9,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VariantController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/linkstorage', function () {
+    Illuminate\Support\Facades\Artisan::call('storage:link');
+});
+
 Route::get('/', function () {
     return view('home');
 });
